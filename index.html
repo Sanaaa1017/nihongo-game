@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五十音的小小練習</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>五十音平假名⇔羅馬拼音</h1>
+        <div class="score-sheet">
+            <p>目前分數: <span id="score-value">0</span></p>
+            <p>剩餘時間: <span id="time-left">60</span> 秒</p>
+        </div>
+        <button type="button" id="start" class="start-btn">スタート！</button>
+        <div id="rules" class="rules-style">
+            <hr class="hr-style">
+            <div class="game-rule">
+                <p>遊戲規則:</p>
+                <li>在60秒內回答10題平假名題目。</li>
+                <li>每題會顯示一個平假名的字，在輸入框中輸入對應的羅馬拼音。</li>
+                <li>答對題目會加1分，答錯不扣分。</li>
+                <p>
+                    答錯了沒關係~忘記了也別垂頭喪氣~<br>
+                    目標是熟悉這些像毛毛蟲一樣的日文字!🐛<br>
+                    一緒に頑張りましょう！
+                </p>
+            </div>
+            <p>👇一起複習平假名吧!(･ω´･ )b</p>
+            <div class="image-wrapper">
+                <img src="./image/日文50音表平假名.jpg" alt="日文50音表平假名" class="original-size" onclick="showImage()" />
+                <div id="full-screen" class="full-screen" onclick="hideImage()">
+                    <img src="./image/日文50音表平假名.jpg" alt="日文50音表平假名" class="fullsize" />
+                </div>
+            </div>
+        </div>
+
+        <!-- 遊戲畫面 -->
+        <div id="game" class="hidden">
+            <p id="question-number"></p>
+            <p id="question" class="question-style"></p>
+            <div class="input-box">
+                <input type="text" id="answer" class="input-style" placeholder="請輸入羅馬拼音">
+                <button type="button" id="submit" class="submit-btn">送出</button>
+                <p id="feedback"></p> <!-- 正確或錯誤提示 -->
+            </div>
+        </div>
+        <!-- 結果畫面 -->
+        <div id="result" class="hidden">
+            <h2>測驗結束！</h2>
+            <p id="final-score"></p>
+            <table id="answer-table"></table>
+            <button type="button" id="restart" class="start-btn">再來一次</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function showImage() {
+            document.getElementById("full-screen").classList.add("show");
+        }
+
+        function hideImage() {
+            document.getElementById("full-screen").classList.remove("show");
+        }
+    </script>
+</body>
+
+</html>
