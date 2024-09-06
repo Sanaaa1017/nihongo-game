@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const feedbackDisplay = document.getElementById("feedback");
   const answerTable = document.getElementById("answer-table");
   const rules = document.getElementById("rules"); 
+  const hiraganaCheckbox = document.getElementById("hiragana");
+  const katakanaCheckbox = document.getElementById("katakana");
 
   let score = 0;
   let currentQuestionIndex = 0;
@@ -21,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let userAnswers = []; // 儲存回答的答案和結果
   let shuffledQuestions; // 隨機排序的題目
 
-  const questions = [
+  const hiraganaQuestions = [
     { question: "あ", answer: "a" },
     { question: "い", answer: "i" },
     { question: "う", answer: "u" },
@@ -70,6 +72,55 @@ document.addEventListener("DOMContentLoaded", function () {
     { question: "ん", answer: "n" },
   ];
 
+  const katakanaQuestions = [
+    { question: "ア", answer: "a" },
+    { question: "イ", answer: "i" },
+    { question: "ウ", answer: "u" },
+    { question: "エ", answer: "e" },
+    { question: "オ", answer: "o" },
+    { question: "カ", answer: "ka" },
+    { question: "キ", answer: "ki" },
+    { question: "ク", answer: "ku" },
+    { question: "ケ", answer: "ke" },
+    { question: "コ", answer: "ko" },
+    { question: "サ", answer: "sa" },
+    { question: "シ", answer: ["si", "shi"] },
+    { question: "ス", answer: "su" },
+    { question: "セ", answer: "se" },
+    { question: "ソ", answer: "so" },
+    { question: "タ", answer: "ta" },
+    { question: "チ", answer: ["ti", "chi"] },
+    { question: "ツ", answer: ["tu", "tsu"] },
+    { question: "テ", answer: "te" },
+    { question: "ト", answer: "to" },
+    { question: "ナ", answer: "na" },
+    { question: "ニ", answer: "ni" },
+    { question: "ヌ", answer: "nu" },
+    { question: "ネ", answer: "ne" },
+    { question: "ノ", answer: "no" },
+    { question: "ハ", answer: "ha" },
+    { question: "ヒ", answer: "hi" },
+    { question: "フ", answer: ["hu", "fu"] },
+    { question: "ヘ", answer: "he" },
+    { question: "ホ", answer: "ho" },
+    { question: "マ", answer: "ma" },
+    { question: "ミ", answer: "mi" },
+    { question: "ム", answer: "mu" },
+    { question: "メ", answer: "me" },
+    { question: "モ", answer: "mo" },
+    { question: "ヤ", answer: "ya" },
+    { question: "ユ", answer: "yu" },
+    { question: "ヨ", answer: "yo" },
+    { question: "ラ", answer: "ra" },
+    { question: "リ", answer: "ri" },
+    { question: "ル", answer: "ru" },
+    { question: "レ", answer: "re" },
+    { question: "ロ", answer: "ro" },
+    { question: "ワ", answer: "wa" },
+    { question: "ヲ", answer: "wo" },
+    { question: "ン", answer: "n" },
+];
+
   startBtn.addEventListener("click", startGame);
   submitBtn.addEventListener("click", checkAnswer);
   restartBtn.addEventListener("click", restartGame);
@@ -84,9 +135,28 @@ document.addEventListener("DOMContentLoaded", function () {
     startBtn.classList.add("hidden");
     gameContainer.classList.remove("hidden");
     rules.classList.add("hidden");
-    shuffledQuestions = shuffleArray(questions).slice(0, 10); // 隨機選出10題
+    
+    let selectedQuestions = [];
+    if (hiraganaCheckbox.checked) {
+      selectedQuestions = selectedQuestions.concat(hiraganaQuestions);
+    }
+    if (katakanaCheckbox.checked) {
+      selectedQuestions = selectedQuestions.concat(katakanaQuestions);
+    }
+
+    if (selectedQuestions.length === 0) {
+      alert("請至少選擇一個題目範圍！");
+      startBtn.classList.remove("hidden");
+      gameContainer.classList.add("hidden");
+      rules.classList.remove("hidden");
+      return;
+    }
+
+    // 隨機選擇10題
+    shuffledQuestions = shuffleArray(selectedQuestions).slice(0, 10);
     showQuestion();
     timer = setInterval(updateTimer, 1000);
+  
   }
 
   function showQuestion() {
