@@ -7,33 +7,32 @@ document.addEventListener("DOMContentLoaded", function () {
   const restartBtn = document.getElementById("restart");
   const questionNumber = document.getElementById("question-number");
   const questionText = document.getElementById("question");
-  const answerInput = document.getElementById("answer");
+  const inputAnswer = document.getElementById("answer");
   const scoreDisplay = document.getElementById("score-value");
   const timerDisplay = document.getElementById("time-left");
-  const finalScoreDisplay = document.getElementById("final-score");
-  const feedbackDisplay = document.getElementById("feedback");
+  const feedbackShow = document.getElementById("feedback");
+  const finalScoreShow = document.getElementById("final-score");
   const answerTable = document.getElementById("answer-table");
-  const selectionArea = document.getElementById("selection-area");
-  const hiraganaAllCheckbox = document.getElementById("hira-all");
+  const hiraAllCheckbox = document.getElementById("hira-all");
   const hiraSeionCheckbox = document.getElementById("hira-seion");
   const hiraDakuonCheckbox = document.getElementById("hira-dakuon");
   const hiraHandakuonCheckbox = document.getElementById("hira-handakuon");
   const hiraYouonCheckbox = document.getElementById("hira-youon");
-  const kataganaAllCheckbox = document.getElementById("kata-all");
+  const kataAllCheckbox = document.getElementById("kata-all");
   const kataSeionCheckbox = document.getElementById("kata-seion");
   const kataDakuonCheckbox = document.getElementById("kata-dakuon");
   const kataHandakuonCheckbox = document.getElementById("kata-handakuon");
   const kataYouonCheckbox = document.getElementById("kata-youon");
 
   let score = 0;
-  let currentQuestionIndex = 0;
+  let NowQuestionIndex = 0;
   let timer;
   let timeLeft = 60; // 計時器時間
-  let userAnswers = []; // 儲存回答的答案和結果
+  let userAnswers = []; // 儲存回答答案和結果
   let randomQuestions; // 隨機排序的題目
   let hiraSeion = [];
   let hiraDakuon = [];
-  let hiraHanakuon = [];
+  let hiraHandakuon = [];
   let hiraYouon = [];
   let kataSeion = [];
   let kataDakuon = [];
@@ -41,66 +40,66 @@ document.addEventListener("DOMContentLoaded", function () {
   let kataYouon = [];
 
   fetch("hatsuon.json")
-    .then((response) => response.json())
+    .then((response) => response.json()) //把資料轉成JSON格式
     .then((data) => {
       hiraSeion = data.hiraSeion;
       hiraDakuon = data.hiraDakuon;
-      hiraHanakuon = data.hiraHanakuon;
+      hiraHandakuon = data.hiraHandakuon;
       hiraYouon = data.hiraYouon;
       kataSeion = data.kataSeion;
       kataDakuon = data.kataDakuon;
       kataHanakuon = data.kataHanakuon;
       kataYouon = data.kataYouon;
+      // console.log(data.hiraHandakuon);
     })
     .catch((error) => console.error("Error loading questions:", error));
 
-  startBtn.addEventListener("click", startGame);
-  submitBtn.addEventListener("click", checkAnswer);
-  restartBtn.addEventListener("click", restartGame);
-
-  // 選取平假名
-  hiraganaAllCheckbox.addEventListener("change", function () {
-    const isChecked = hiraganaAllCheckbox.checked;
+  // 平假名 checkbox 操作
+  // 監聽全選選項狀態 => 更新個別選項
+  hiraAllCheckbox.addEventListener("change", function () {
+    const isChecked = hiraAllCheckbox.checked;
     hiraSeionCheckbox.checked = isChecked;
     hiraDakuonCheckbox.checked = isChecked;
     hiraHandakuonCheckbox.checked = isChecked;
     hiraYouonCheckbox.checked = isChecked;
-    updatehiraganaAllCheckbox(); // 更新「全選」checkbox 狀態
+    updateHiraAllCheckbox();
   });
-
-  function updatehiraganaAllCheckbox() {
+  // 檢查個別選項狀態 => 更新全選選項狀態
+  function updateHiraAllCheckbox() {
     const HiraCheckboxes = [
       hiraSeionCheckbox,
       hiraDakuonCheckbox,
       hiraHandakuonCheckbox,
       hiraYouonCheckbox,
     ];
+    // 選中所有個別選項 => 全選選項選中
     const allChecked = HiraCheckboxes.every((checkbox) => checkbox.checked);
-    hiraganaAllCheckbox.checked = allChecked;
-    hiraganaAllCheckbox.indeterminate =
+    hiraAllCheckbox.checked = allChecked;
+    // 當個別選項沒有全部都被選中，但至少有一個被選中時 => 全選選項狀態為不確定
+    hiraAllCheckbox.indeterminate =
       !allChecked && HiraCheckboxes.some((checkbox) => checkbox.checked);
   }
-  // 當任何個別 checkbox 狀態改變時
+  // 當任何個別選項狀態改變時 => 更新全選選項
   [
     hiraSeionCheckbox,
     hiraDakuonCheckbox,
     hiraHandakuonCheckbox,
     hiraYouonCheckbox,
   ].forEach((checkbox) => {
-    checkbox.addEventListener("change", updatehiraganaAllCheckbox);
+    checkbox.addEventListener("change", updateHiraAllCheckbox);
   });
 
-  // 選取片假名
-  kataganaAllCheckbox.addEventListener("change", function () {
-    const isChecked = kataganaAllCheckbox.checked;
+  // 片假名 checkbox 操作
+  kataAllCheckbox.addEventListener("change", function () {
+    const isChecked = kataAllCheckbox.checked;
     kataSeionCheckbox.checked = isChecked;
     kataDakuonCheckbox.checked = isChecked;
     kataHandakuonCheckbox.checked = isChecked;
     kataYouonCheckbox.checked = isChecked;
-    updatekataganaAllCheckbox();
+    updateKataAllCheckbox();
   });
 
-  function updatekataganaAllCheckbox() {
+  function updateKataAllCheckbox() {
     const kataCheckboxes = [
       kataSeionCheckbox,
       kataDakuonCheckbox,
@@ -108,8 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
       kataYouonCheckbox,
     ];
     const allChecked = kataCheckboxes.every((checkbox) => checkbox.checked);
-    kataganaAllCheckbox.checked = allChecked;
-    kataganaAllCheckbox.indeterminate =
+    kataAllCheckbox.checked = allChecked;
+    kataAllCheckbox.indeterminate =
       !allChecked && kataCheckboxes.some((checkbox) => checkbox.checked);
   }
 
@@ -119,13 +118,17 @@ document.addEventListener("DOMContentLoaded", function () {
     kataHandakuonCheckbox,
     kataYouonCheckbox,
   ].forEach((checkbox) => {
-    checkbox.addEventListener("change", updatekataganaAllCheckbox);
+    checkbox.addEventListener("change", updateKataAllCheckbox);
   });
+
+  startBtn.addEventListener("click", startGame);
+  submitBtn.addEventListener("click", checkAnswer);
+  restartBtn.addEventListener("click", restartGame);
 
   function startGame() {
     startArea.classList.add("hidden");
     gameArea.classList.remove("hidden");
-    // 選取題目範圍
+    // 選取題目範圍 => 合併所選題目為一個陣列
     let selectedQuestions = [];
     if (hiraSeionCheckbox.checked) {
       selectedQuestions = selectedQuestions.concat(hiraSeion);
@@ -134,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
       selectedQuestions = selectedQuestions.concat(hiraDakuon);
     }
     if (hiraHandakuonCheckbox.checked) {
-      selectedQuestions = selectedQuestions.concat(hiraHanakuon);
+      selectedQuestions = selectedQuestions.concat(hiraHandakuon);
     }
     if (hiraYouonCheckbox.checked) {
       selectedQuestions = selectedQuestions.concat(hiraYouon);
@@ -160,74 +163,79 @@ document.addEventListener("DOMContentLoaded", function () {
     // 隨機選擇15題
     randomQuestions = shuffleArray(selectedQuestions).slice(0, 15);
     showQuestion();
+    // 倒數計時器
     timer = setInterval(updateTimer, 1000);
   }
-
-  function shuffleArray(array) {
-    let currentIndex = array.length,
+  // 隨機排列陣列裡面的元素(Fisher-Yates Shuffle)
+  function shuffleArray(arr) {
+    let currentIndex = arr.length,
       temporaryValue,
       randomIndex;
     while (currentIndex !== 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+      // 交換元素
+      temporaryValue = arr[currentIndex];
+      arr[currentIndex] = arr[randomIndex];
+      arr[randomIndex] = temporaryValue;
+      // console.log(`交換 ${currentIndex} 和 ${randomIndex}:`, arr);
     }
-    return array;
+    return arr;
   }
-
+  // 顯示當前問題
   function showQuestion() {
-    if (currentQuestionIndex < randomQuestions.length) {
-      questionNumber.textContent = `題數: ${currentQuestionIndex + 1}/${
+    if (NowQuestionIndex < randomQuestions.length) {
+      questionNumber.textContent = `題數: ${NowQuestionIndex + 1}/${
         randomQuestions.length
       }`;
-      questionText.textContent = randomQuestions[currentQuestionIndex].question;
-      answerInput.value = "";
-      feedbackDisplay.textContent = "";
-      answerInput.focus();
+      questionText.textContent = randomQuestions[NowQuestionIndex].question;
+      inputAnswer.value = "";
+      feedbackShow.textContent = "";
+      // 可直接輸入答案,不需要再點擊輸入框
+      inputAnswer.focus();
     } else {
       finishGame();
     }
   }
-
-  answerInput.addEventListener("keydown", function (event) {
+  // 監聽按下Enter鍵時提交答案
+  inputAnswer.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
       checkAnswer();
     }
   });
-
+  // 檢查答案是否正確，回饋顯示
   function checkAnswer() {
-    const userAnswer = answerInput.value.trim().toLowerCase();
-    const correctAnswer = randomQuestions[currentQuestionIndex].answer;
-    // 檢查答案是否是陣列，並確認使用者輸入是否在正確答案中
+    // 移除答案頭尾空白&轉成小寫
+    const userAnswer = inputAnswer.value.trim().toLowerCase();
+    const correctAnswer = randomQuestions[NowQuestionIndex].answer;
+    // 檢查正確答案是否為一個數組，如果是的話用 includes 方法檢查;如果不是數組的話直接比較輸入答案和正確答案
     const isCorrect = Array.isArray(correctAnswer)
       ? correctAnswer.includes(userAnswer)
       : userAnswer === correctAnswer;
 
     if (isCorrect) {
       score++;
-      feedbackDisplay.innerHTML =
-        '<span style="color: green;">答對了!!好棒</span>';
+      feedbackShow.innerHTML =
+        '<span style="color: green;">答對了!!你好棒</span>';
     } else {
-      feedbackDisplay.innerHTML =
+      feedbackShow.innerHTML =
         '<span style="color: red;">答錯囉~再接再厲</span>';
     }
 
-    feedbackDisplay.innerHTML += `<div>正確答案: ${
+    feedbackShow.innerHTML += `<div>正確答案: ${
       Array.isArray(correctAnswer) ? correctAnswer.join(" / ") : correctAnswer
     }</div>`;
 
-    // 將回答記錄到userAnswers陣列
+    // 將回答和結果記錄到userAnswers陣列
     userAnswers.push({
-      question: randomQuestions[currentQuestionIndex].question,
+      question: randomQuestions[NowQuestionIndex].question,
       userAnswer: userAnswer,
       correctAnswer: correctAnswer,
       isCorrect: isCorrect,
     });
 
     scoreDisplay.textContent = score;
-    currentQuestionIndex++;
+    NowQuestionIndex++;
 
     setTimeout(showQuestion, 1000); // 1秒延遲
   }
@@ -245,12 +253,13 @@ document.addEventListener("DOMContentLoaded", function () {
     clearInterval(timer);
     gameArea.classList.add("hidden");
     resultArea.classList.remove("hidden");
-    finalScoreDisplay.textContent = `你的分數: ${score} / ${randomQuestions.length}`;
-    displayAnswerTable();
+    finalScoreShow.textContent = `你的分數: ${score} / ${randomQuestions.length}`;
+    showAnswerTable();
   }
-
-  function displayAnswerTable() {
+  // 顯示答案表格
+  function showAnswerTable() {
     answerTable.innerHTML = "";
+    // 製作表頭
     const headerRow = document.createElement("tr");
     headerRow.innerHTML = `
         <th>題目</th>
@@ -274,7 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function restartGame() {
     score = 0;
-    currentQuestionIndex = 0;
+    NowQuestionIndex = 0;
     timeLeft = 60;
     userAnswers = []; // 清除回答記錄
     scoreDisplay.textContent = score;
