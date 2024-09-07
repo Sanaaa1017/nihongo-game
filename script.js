@@ -1,171 +1,188 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const startArea = document.getElementById("start-area");
+  const gameArea = document.getElementById("game-area");
+  const resultArea = document.getElementById("result-area");
   const startBtn = document.getElementById("start");
   const submitBtn = document.getElementById("submit");
   const restartBtn = document.getElementById("restart");
-  const gameContainer = document.getElementById("game");
   const questionNumber = document.getElementById("question-number");
   const questionText = document.getElementById("question");
   const answerInput = document.getElementById("answer");
   const scoreDisplay = document.getElementById("score-value");
   const timerDisplay = document.getElementById("time-left");
-  const resultScreen = document.getElementById("result");
   const finalScoreDisplay = document.getElementById("final-score");
   const feedbackDisplay = document.getElementById("feedback");
   const answerTable = document.getElementById("answer-table");
-  const rules = document.getElementById("rules"); 
-  const hiraganaCheckbox = document.getElementById("hiragana");
-  const katakanaCheckbox = document.getElementById("katakana");
+  const selectionArea = document.getElementById("selection-area");
+  const hiraganaAllCheckbox = document.getElementById("hira-all");
+  const hiraSeionCheckbox = document.getElementById("hira-seion");
+  const hiraDakuonCheckbox = document.getElementById("hira-dakuon");
+  const hiraHandakuonCheckbox = document.getElementById("hira-handakuon");
+  const hiraYouonCheckbox = document.getElementById("hira-youon");
+  const kataganaAllCheckbox = document.getElementById("kata-all");
+  const kataSeionCheckbox = document.getElementById("kata-seion");
+  const kataDakuonCheckbox = document.getElementById("kata-dakuon");
+  const kataHandakuonCheckbox = document.getElementById("kata-handakuon");
+  const kataYouonCheckbox = document.getElementById("kata-youon");
 
   let score = 0;
   let currentQuestionIndex = 0;
   let timer;
   let timeLeft = 60; // 計時器時間
   let userAnswers = []; // 儲存回答的答案和結果
-  let shuffledQuestions; // 隨機排序的題目
+  let randomQuestions; // 隨機排序的題目
+  let hiraSeion = [];
+  let hiraDakuon = [];
+  let hiraHanakuon = [];
+  let hiraYouon = [];
+  let kataSeion = [];
+  let kataDakuon = [];
+  let kataHanakuon = [];
+  let kataYouon = [];
 
-  const hiraganaQuestions = [
-    { question: "あ", answer: "a" },
-    { question: "い", answer: "i" },
-    { question: "う", answer: "u" },
-    { question: "え", answer: "e" },
-    { question: "お", answer: "o" },
-    { question: "か", answer: "ka" },
-    { question: "き", answer: "ki" },
-    { question: "く", answer: "ku" },
-    { question: "け", answer: "ke" },
-    { question: "こ", answer: "ko" },
-    { question: "さ", answer: "sa" },
-    { question: "し", answer: ["si", "shi"] },
-    { question: "す", answer: "su" },
-    { question: "せ", answer: "se" },
-    { question: "そ", answer: "so" },
-    { question: "た", answer: "ta" },
-    { question: "ち", answer: ["ti", "chi"] },
-    { question: "つ", answer: ["tu", "tsu"] },
-    { question: "て", answer: "te" },
-    { question: "と", answer: "to" },
-    { question: "な", answer: "na" },
-    { question: "に", answer: "ni" },
-    { question: "ぬ", answer: "nu" },
-    { question: "ね", answer: "ne" },
-    { question: "の", answer: "no" },
-    { question: "は", answer: "ha" },
-    { question: "ひ", answer: "hi" },
-    { question: "ふ", answer: ["hu", "fu"] },
-    { question: "へ", answer: "he" },
-    { question: "ほ", answer: "ho" },
-    { question: "ま", answer: "ma" },
-    { question: "み", answer: "mi" },
-    { question: "む", answer: "mu" },
-    { question: "め", answer: "me" },
-    { question: "も", answer: "mo" },
-    { question: "や", answer: "ya" },
-    { question: "ゆ", answer: "yu" },
-    { question: "よ", answer: "yo" },
-    { question: "ら", answer: "ra" },
-    { question: "り", answer: "ri" },
-    { question: "る", answer: "ru" },
-    { question: "れ", answer: "re" },
-    { question: "ろ", answer: "ro" },
-    { question: "わ", answer: "wa" },
-    { question: "を", answer: "wo" },
-    { question: "ん", answer: "n" },
-  ];
-
-  const katakanaQuestions = [
-    { question: "ア", answer: "a" },
-    { question: "イ", answer: "i" },
-    { question: "ウ", answer: "u" },
-    { question: "エ", answer: "e" },
-    { question: "オ", answer: "o" },
-    { question: "カ", answer: "ka" },
-    { question: "キ", answer: "ki" },
-    { question: "ク", answer: "ku" },
-    { question: "ケ", answer: "ke" },
-    { question: "コ", answer: "ko" },
-    { question: "サ", answer: "sa" },
-    { question: "シ", answer: ["si", "shi"] },
-    { question: "ス", answer: "su" },
-    { question: "セ", answer: "se" },
-    { question: "ソ", answer: "so" },
-    { question: "タ", answer: "ta" },
-    { question: "チ", answer: ["ti", "chi"] },
-    { question: "ツ", answer: ["tu", "tsu"] },
-    { question: "テ", answer: "te" },
-    { question: "ト", answer: "to" },
-    { question: "ナ", answer: "na" },
-    { question: "ニ", answer: "ni" },
-    { question: "ヌ", answer: "nu" },
-    { question: "ネ", answer: "ne" },
-    { question: "ノ", answer: "no" },
-    { question: "ハ", answer: "ha" },
-    { question: "ヒ", answer: "hi" },
-    { question: "フ", answer: ["hu", "fu"] },
-    { question: "ヘ", answer: "he" },
-    { question: "ホ", answer: "ho" },
-    { question: "マ", answer: "ma" },
-    { question: "ミ", answer: "mi" },
-    { question: "ム", answer: "mu" },
-    { question: "メ", answer: "me" },
-    { question: "モ", answer: "mo" },
-    { question: "ヤ", answer: "ya" },
-    { question: "ユ", answer: "yu" },
-    { question: "ヨ", answer: "yo" },
-    { question: "ラ", answer: "ra" },
-    { question: "リ", answer: "ri" },
-    { question: "ル", answer: "ru" },
-    { question: "レ", answer: "re" },
-    { question: "ロ", answer: "ro" },
-    { question: "ワ", answer: "wa" },
-    { question: "ヲ", answer: "wo" },
-    { question: "ン", answer: "n" },
-];
+  fetch("hatsuon.json")
+    .then((response) => response.json())
+    .then((data) => {
+      hiraSeion = data.hiraSeion;
+      hiraDakuon = data.hiraDakuon;
+      hiraHanakuon = data.hiraHanakuon;
+      hiraYouon = data.hiraYouon;
+      kataSeion = data.kataSeion;
+      kataDakuon = data.kataDakuon;
+      kataHanakuon = data.kataHanakuon;
+      kataYouon = data.kataYouon;
+    })
+    .catch((error) => console.error("Error loading questions:", error));
 
   startBtn.addEventListener("click", startGame);
   submitBtn.addEventListener("click", checkAnswer);
   restartBtn.addEventListener("click", restartGame);
 
-  answerInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      checkAnswer();
-    }
+  // 選取平假名
+  hiraganaAllCheckbox.addEventListener("change", function () {
+    const isChecked = hiraganaAllCheckbox.checked;
+    hiraSeionCheckbox.checked = isChecked;
+    hiraDakuonCheckbox.checked = isChecked;
+    hiraHandakuonCheckbox.checked = isChecked;
+    hiraYouonCheckbox.checked = isChecked;
+    updatehiraganaAllCheckbox(); // 更新「全選」checkbox 狀態
+  });
+
+  function updatehiraganaAllCheckbox() {
+    const HiraCheckboxes = [
+      hiraSeionCheckbox,
+      hiraDakuonCheckbox,
+      hiraHandakuonCheckbox,
+      hiraYouonCheckbox,
+    ];
+    const allChecked = HiraCheckboxes.every((checkbox) => checkbox.checked);
+    hiraganaAllCheckbox.checked = allChecked;
+    hiraganaAllCheckbox.indeterminate =
+      !allChecked && HiraCheckboxes.some((checkbox) => checkbox.checked);
+  }
+  // 當任何個別 checkbox 狀態改變時
+  [
+    hiraSeionCheckbox,
+    hiraDakuonCheckbox,
+    hiraHandakuonCheckbox,
+    hiraYouonCheckbox,
+  ].forEach((checkbox) => {
+    checkbox.addEventListener("change", updatehiraganaAllCheckbox);
+  });
+
+  // 選取片假名
+  kataganaAllCheckbox.addEventListener("change", function () {
+    const isChecked = kataganaAllCheckbox.checked;
+    kataSeionCheckbox.checked = isChecked;
+    kataDakuonCheckbox.checked = isChecked;
+    kataHandakuonCheckbox.checked = isChecked;
+    kataYouonCheckbox.checked = isChecked;
+    updatekataganaAllCheckbox();
+  });
+
+  function updatekataganaAllCheckbox() {
+    const kataCheckboxes = [
+      kataSeionCheckbox,
+      kataDakuonCheckbox,
+      kataHandakuonCheckbox,
+      kataYouonCheckbox,
+    ];
+    const allChecked = kataCheckboxes.every((checkbox) => checkbox.checked);
+    kataganaAllCheckbox.checked = allChecked;
+    kataganaAllCheckbox.indeterminate =
+      !allChecked && kataCheckboxes.some((checkbox) => checkbox.checked);
+  }
+
+  [
+    kataSeionCheckbox,
+    kataDakuonCheckbox,
+    kataHandakuonCheckbox,
+    kataYouonCheckbox,
+  ].forEach((checkbox) => {
+    checkbox.addEventListener("change", updatekataganaAllCheckbox);
   });
 
   function startGame() {
-    startBtn.classList.add("hidden");
-    gameContainer.classList.remove("hidden");
-    rules.classList.add("hidden");
-    
+    startArea.classList.add("hidden");
+    gameArea.classList.remove("hidden");
+    // 選取題目範圍
     let selectedQuestions = [];
-    if (hiraganaCheckbox.checked) {
-      selectedQuestions = selectedQuestions.concat(hiraganaQuestions);
+    if (hiraSeionCheckbox.checked) {
+      selectedQuestions = selectedQuestions.concat(hiraSeion);
     }
-    if (katakanaCheckbox.checked) {
-      selectedQuestions = selectedQuestions.concat(katakanaQuestions);
+    if (hiraDakuonCheckbox.checked) {
+      selectedQuestions = selectedQuestions.concat(hiraDakuon);
     }
-
+    if (hiraHandakuonCheckbox.checked) {
+      selectedQuestions = selectedQuestions.concat(hiraHanakuon);
+    }
+    if (hiraYouonCheckbox.checked) {
+      selectedQuestions = selectedQuestions.concat(hiraYouon);
+    }
+    if (kataSeionCheckbox.checked) {
+      selectedQuestions = selectedQuestions.concat(kataSeion);
+    }
+    if (kataDakuonCheckbox.checked) {
+      selectedQuestions = selectedQuestions.concat(kataDakuon);
+    }
+    if (kataHandakuonCheckbox.checked) {
+      selectedQuestions = selectedQuestions.concat(kataHanakuon);
+    }
+    if (kataYouonCheckbox.checked) {
+      selectedQuestions = selectedQuestions.concat(kataYouon);
+    }
     if (selectedQuestions.length === 0) {
       alert("請至少選擇一個題目範圍！");
-      startBtn.classList.remove("hidden");
-      gameContainer.classList.add("hidden");
-      rules.classList.remove("hidden");
+      gameArea.classList.add("hidden");
+      startArea.classList.remove("hidden");
       return;
     }
-
-    // 隨機選擇10題
-    shuffledQuestions = shuffleArray(selectedQuestions).slice(0, 10);
+    // 隨機選擇15題
+    randomQuestions = shuffleArray(selectedQuestions).slice(0, 15);
     showQuestion();
     timer = setInterval(updateTimer, 1000);
-  
+  }
+
+  function shuffleArray(array) {
+    let currentIndex = array.length,
+      temporaryValue,
+      randomIndex;
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
   }
 
   function showQuestion() {
-    if (currentQuestionIndex < shuffledQuestions.length) {
+    if (currentQuestionIndex < randomQuestions.length) {
       questionNumber.textContent = `題數: ${currentQuestionIndex + 1}/${
-        shuffledQuestions.length
+        randomQuestions.length
       }`;
-      questionText.textContent =
-        shuffledQuestions[currentQuestionIndex].question;
+      questionText.textContent = randomQuestions[currentQuestionIndex].question;
       answerInput.value = "";
       feedbackDisplay.textContent = "";
       answerInput.focus();
@@ -174,10 +191,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  answerInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      checkAnswer();
+    }
+  });
+
   function checkAnswer() {
     const userAnswer = answerInput.value.trim().toLowerCase();
-    const correctAnswer = shuffledQuestions[currentQuestionIndex].answer;
-
+    const correctAnswer = randomQuestions[currentQuestionIndex].answer;
     // 檢查答案是否是陣列，並確認使用者輸入是否在正確答案中
     const isCorrect = Array.isArray(correctAnswer)
       ? correctAnswer.includes(userAnswer)
@@ -185,20 +207,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (isCorrect) {
       score++;
-      feedbackDisplay.innerHTML = '<span style="color: green;">答對了!!好棒</span>';
-      
+      feedbackDisplay.innerHTML =
+        '<span style="color: green;">答對了!!好棒</span>';
     } else {
-      feedbackDisplay.innerHTML = '<span style="color: red;">答錯囉~~再接再厲</span>';
+      feedbackDisplay.innerHTML =
+        '<span style="color: red;">答錯囉~再接再厲</span>';
     }
 
-    // 顯示正確答案
     feedbackDisplay.innerHTML += `<div>正確答案: ${
       Array.isArray(correctAnswer) ? correctAnswer.join(" / ") : correctAnswer
     }</div>`;
 
-    // 將用戶的回答記錄到 userAnswers 陣列
+    // 將回答記錄到userAnswers陣列
     userAnswers.push({
-      question: shuffledQuestions[currentQuestionIndex].question,
+      question: randomQuestions[currentQuestionIndex].question,
       userAnswer: userAnswer,
       correctAnswer: correctAnswer,
       isCorrect: isCorrect,
@@ -221,9 +243,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function finishGame() {
     clearInterval(timer);
-    gameContainer.classList.add("hidden");
-    resultScreen.classList.remove("hidden");
-    finalScoreDisplay.textContent = `你的分數: ${score} / ${shuffledQuestions.length}`;
+    gameArea.classList.add("hidden");
+    resultArea.classList.remove("hidden");
+    finalScoreDisplay.textContent = `你的分數: ${score} / ${randomQuestions.length}`;
     displayAnswerTable();
   }
 
@@ -257,22 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
     userAnswers = []; // 清除回答記錄
     scoreDisplay.textContent = score;
     timerDisplay.textContent = timeLeft;
-    resultScreen.classList.add("hidden");
-    startBtn.classList.remove("hidden");
-    rules.classList.remove("hidden");
-  }
-
-  function shuffleArray(array) {
-    let currentIndex = array.length,
-      temporaryValue,
-      randomIndex;
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-    return array;
+    resultArea.classList.add("hidden");
+    startArea.classList.remove("hidden");
   }
 });

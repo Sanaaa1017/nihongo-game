@@ -1,0 +1,180 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url(/image/background.jpg);
+  background-size: cover;
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+/* 開始畫面 */
+.container {
+  background-color: rgba(255, 255, 255, 0.84);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.selection-area {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 設置兩列，每列寬度相等 */
+  gap: 20px;
+}
+
+.hr-orange {
+  border-top: 1.6px dashed rgb(253, 177, 36);
+  margin: 20px;
+}
+
+.rule-style {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  background-color: rgba(255, 202, 184, 0.715);
+  border: 5px solid rgb(255, 255, 255);
+  border-radius: 20px;
+  margin: 30px auto;
+  padding: 20px;
+  text-align: start;
+}
+
+.start-btn {
+  background-color: rgb(253, 177, 36);
+  padding: 10px 20px;
+  margin: 20px 0;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.start-btn:hover {
+  background-color: rgb(156, 253, 71);
+  color: white;
+}
+
+/* 遊戲畫面 */
+.score-sheet {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.question-style {
+  margin: 20px;
+  font-size: 3.5rem;
+  font-weight: bold;
+}
+
+.input-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-style {
+  width: 80%;
+  height: auto;
+  padding: 5px;
+}
+
+.submit-btn {
+  background-color: rgb(253, 177, 36);
+  padding: 10px 30px;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: rgb(156, 253, 71);
+  padding: 10px 30px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.feedback-style {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+/* 結算畫面 */
+#result {
+  margin-top: 20px;
+}
+
+#answer-table {
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
+}
+
+#answer-table th,
+#answer-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+/* 手機版 */
+@media (max-width: 414px) {
+  body {
+    background-color: rgba(255, 255, 255, 0.84);
+    padding: 0;
+  }
+
+  .h1 {
+    font-size: 1.5rem;
+  }
+
+  .hr-orange {
+    width: 80%;
+    border-top: 1.6px dashed rgb(253, 177, 36);
+    margin: 10px auto;
+  }
+
+  .container {
+    background-color: rgba(255, 255, 255, 0.84);
+    max-width: 100%;
+    margin: 0;
+    padding: 0px;
+    border-radius: 0px;
+  }
+
+  .rule-style {
+    font-size: 0.75rem;
+    padding: 10px 20px;
+    margin: 10px auto;
+  }
+
+  .hira-style {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .kata-style {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .score-sheet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
