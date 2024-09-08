@@ -11,46 +11,49 @@
 
 <body>
     <div class="container">
-        <h1 class="h1">日文五十音測驗</h1>
         <!-- 開始畫面 -->
-        <div id="start-area">
-            <div id="selection-area" class="selection-area">
-                <div class="hira-style">
-                    <h3>平假名</h3>
-                    <label><input type="checkbox" id="hira-all"> 全選</label>
-                    <label><input type="checkbox" id="hira-seion" checked> 清音</label>
-                    <label><input type="checkbox" id="hira-dakuon"> 濁音</label>
-                    <label><input type="checkbox" id="hira-handakuon"> 半濁音</label>
-                    <label><input type="checkbox" id="hira-youon"> 拗音</label>
+        <div id="start-area" class="start-area">
+            <h1 class="h1">
+                <img src="./image/title.png" width="50%" alt="五十音標題">
+                <div class="animal-container">
+                    <img src="./image/neko.png" class="animal left" alt="Animal 1">
+                    <img src="./image/pig.png" class="animal right" alt="Animal 2">
                 </div>
-                <div class="kata-style">
-                    <h3>片假名</h3>
-                    <label><input type="checkbox" id="kata-all"> 全選</label>
-                    <label><input type="checkbox" id="kata-seion" checked> 清音</label>
-                    <label><input type="checkbox" id="kata-dakuon">濁音</label>
-                    <label><input type="checkbox" id="kata-handakuon">半濁音</label>
-                    <label><input type="checkbox" id="kata-youon">拗音</label>
+            </h1>
+           
+            <div class="flex">
+                <img src="./image/kokuban.png" class="rule-style" alt="遊戲規則">
+                <div id="selection-area" class="selection-area">
+                    <div class="select-style">
+                        <h3>平假名</h3>
+                        <label><input type="checkbox" id="hira-all"> 全選</label>
+                        <label><input type="checkbox" id="hira-seion" checked> 清音</label>
+                        <label><input type="checkbox" id="hira-dakuon"> 濁音</label>
+                        <label><input type="checkbox" id="hira-handakuon"> 半濁音</label>
+                        <label><input type="checkbox" id="hira-youon"> 拗音</label>
+                    </div>
+                    <div class="select-style">
+                        <h3>片假名</h3>
+                        <label><input type="checkbox" id="kata-all"> 全選</label>
+                        <label><input type="checkbox" id="kata-seion" checked> 清音</label>
+                        <label><input type="checkbox" id="kata-dakuon">濁音</label>
+                        <label><input type="checkbox" id="kata-handakuon">半濁音</label>
+                        <label><input type="checkbox" id="kata-youon">拗音</label>
+                    </div>
+                    <div class="btns-style">
+                        <a href="/page/form.html">
+                            <img src="./image/review-btn.png" class="review-btn" width="100px" alt="複習按鈕">
+                        </a>
+                        <button type="button" id="start" class="start-btn">
+                            <img src="./image/start-btn.png" width="100px" alt="開始按鈕">
+                        </button>
+                    </div>
                 </div>
             </div>
-            <hr class="hr-orange">
-            <div class="rule-style">
-                <h4>遊戲規則:</h4>
-                <li>勾選要測驗的項目:平假名/片假名/濁音/半濁音/拗音</li>
-                <li>計時60秒，回答15題題目</li>
-                <li>每題會顯示一個平假名的字，在輸入框中輸入對應的羅馬拼音</li>
-                <li>答對題目加1分，答錯不扣分</li>
-                <p>
-                    答錯了沒關係~忘記了也別垂頭喪氣~<br>
-                    目標是熟悉這些像毛毛蟲一樣的日文字們!🐛<br>
-                    一緒に頑張りましょう！
-                </p>
-                <a href="/page/form.html" class="reviex-btn">前往複習</a>
-            </div>
-            <button type="button" id="start" class="start-btn">スタート！</button>
         </div>
 
         <!-- 遊戲畫面 -->
-        <div id="game-area" class="hidden">
+        <div id="game-area" class="game-area hidden">
             <div class="score-sheet">
                 <p>目前分數: <span id="score-value">0</span></p>
                 <p>剩餘時間: <span id="time-left">60</span> 秒</p>
@@ -65,14 +68,20 @@
         </div>
 
         <!-- 結算畫面 -->
-        <div id="result-area" class="hidden">
-            <h2>測驗結束！</h2>
+        <div id="result-area" class="result-area hidden">
+            <div>
+                <img src="./image/hira-o.png" width="80px" alt="">
+                <img src="./image/hira-wa.png" width="80px" alt="">
+                <img src="./image/hira-ri.png" width="80px" alt="">
+            </div>
             <p id="final-score"></p>
             <table id="answer-table"></table>
-            <button type="button" id="restart" class="start-btn">再來一次</button>
+            <button type="button" id="restart" class="start-btn">
+                <img src="./image/again-btn.png" width="150px" alt="再來一次按鈕">
+            </button>
         </div>
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
 
 </body>

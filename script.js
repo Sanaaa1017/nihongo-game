@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
       finishGame();
     }
   }
-  // 監聽按下Enter鍵時提交答案
+  // 按下Enter鍵提交答案
   inputAnswer.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
       checkAnswer();
@@ -205,7 +205,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   // 檢查答案是否正確，回饋顯示
   function checkAnswer() {
-    // 移除答案頭尾空白&轉成小寫
     const userAnswer = inputAnswer.value.trim().toLowerCase();
     const correctAnswer = randomQuestions[NowQuestionIndex].answer;
     // 檢查正確答案是否為一個數組，如果是的話用 includes 方法檢查;如果不是數組的話直接比較輸入答案和正確答案
@@ -290,5 +289,38 @@ document.addEventListener("DOMContentLoaded", function () {
     timerDisplay.textContent = timeLeft;
     resultArea.classList.add("hidden");
     startArea.classList.remove("hidden");
+  }
+
+  AnimalAnimation();
+
+  function AnimalAnimation() {
+    const leftAnimal = document.querySelector(".animal.left");
+    const rightAnimal = document.querySelector(".animal.right");
+
+    // 左右動畫
+    gsap.to(leftAnimal, {
+      x: -100,
+      duration: 3,
+      repeat: -1, // 無限次重複
+      yoyo: true, // 動畫來回播放
+      ease: "power1.inOut",
+    });
+
+    gsap.to(rightAnimal, {
+      x: 100,
+      duration: 3,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut",
+    });
+
+    // 上下動畫
+    gsap.to([leftAnimal, rightAnimal], {
+      y: 20,
+      duration: 1,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
   }
 });
