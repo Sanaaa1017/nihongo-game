@@ -9,24 +9,48 @@
 </head>
 
 <body>
-    <h1>五十音表格</h1>
-    <a href="/index.html">返回測驗</a>
-    <div class="image-wrapper">
-        <img src="/image/日文50音表平假名.jpg" alt="日文50音表平假名" class="original-size" onclick="showImage()" />
-        <div id="full-screen" class="full-screen" onclick="hideImage()">
-            <img src="/image/日文50音表平假名.jpg" alt="日文50音表平假名" class="fullsize" />
+    <div class="container">
+        <div class="title">
+            <img src="../image/title.png" class="title-img" alt="五十音標題">
+            <div class="animal-container">
+                <img src="../image/neko.png" class="animal left" alt="魔法師猫">
+                <img src="../image/pig.png" class="animal right" alt="魔法師豚">
+            </div>
         </div>
+        <div class="flex">
+            <div class="image-wrapper">
+                <img src="../image/form/hiragana-seion.jpg" alt="平假名清音表" class="original-size" onclick="showImage(0)"
+                    data-index="0" />
+                <div id="full-screen-0" class="full-screen" onclick="hideImage(0)">
+                    <img src="../image/form/hiragana-seion.jpg" alt="平假名清音表" class="fullsize" />
+                </div>
+            </div>
+            <div class="image-wrapper">
+                <img src="../image/form/katakana-seion.jpg" alt="片假名清音表" class="original-size" onclick="showImage(1)"
+                    data-index="1" />
+                <div id="full-screen-1" class="full-screen" onclick="hideImage(1)">
+                    <img src="../image/form/katakana-seion.jpg" alt="片假名清音表" class="fullsize" />
+                </div>
+            </div>
+        </div>
+        <a href="../index.html">
+            <img src="../image/goback-btn.png" class="goback-btn" alt="">
+        </a>
     </div>
 
 
+    <script src="../js/script.js"></script>
     <script>
-        function showImage() {
-            document.getElementById("full-screen").classList.add("show");
+        function showImage(index) {
+            // 根據 index 顯示對應的全屏圖片
+            document.getElementById(`full-screen-${index}`).style.display = 'flex';
         }
 
-        function hideImage() {
-            document.getElementById("full-screen").classList.remove("show");
+        function hideImage(index) {
+            // 根據 index 隱藏對應的全屏圖片
+            document.getElementById(`full-screen-${index}`).style.display = 'none';
         }
+
     </script>
 </body>
 

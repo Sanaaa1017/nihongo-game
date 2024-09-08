@@ -13,14 +13,13 @@
     <div class="container">
         <!-- 開始畫面 -->
         <div id="start-area" class="start-area">
-            <h1 class="h1">
-                <img src="./image/title.png" width="50%" alt="五十音標題">
+            <div class="title">
+                <img src="./image/title.png" class="title-img" alt="五十音標題">
                 <div class="animal-container">
-                    <img src="./image/neko.png" class="animal left" alt="Animal 1">
-                    <img src="./image/pig.png" class="animal right" alt="Animal 2">
+                    <img src="./image/neko.png" class="animal left" alt="魔法師猫">
+                    <img src="./image/pig.png" class="animal right" alt="魔法師豚">
                 </div>
-            </h1>
-           
+            </div>
             <div class="flex">
                 <img src="./image/kokuban.png" class="rule-style" alt="遊戲規則">
                 <div id="selection-area" class="selection-area">
@@ -41,11 +40,11 @@
                         <label><input type="checkbox" id="kata-youon">拗音</label>
                     </div>
                     <div class="btns-style">
-                        <a href="/page/form.html">
-                            <img src="./image/review-btn.png" class="review-btn" width="100px" alt="複習按鈕">
+                        <a href="./page/form.html">
+                            <img src="./image/review-btn.png" class="review-btn" alt="複習按鈕">
                         </a>
                         <button type="button" id="start" class="start-btn">
-                            <img src="./image/start-btn.png" width="100px" alt="開始按鈕">
+                            <img src="./image/start-btn.png" width="120px" alt="開始按鈕">
                         </button>
                     </div>
                 </div>
@@ -69,10 +68,14 @@
 
         <!-- 結算畫面 -->
         <div id="result-area" class="result-area hidden">
-            <div>
-                <img src="./image/hira-o.png" width="80px" alt="">
-                <img src="./image/hira-wa.png" width="80px" alt="">
-                <img src="./image/hira-ri.png" width="80px" alt="">
+            <div class="title">
+                <img src="./image/kappa_boy.png" class="kappa" alt="河童ボーイ">
+                <div>
+                    <img src="./image/hira-o.png" width="80px" alt="お">
+                    <img src="./image/hira-wa.png" width="80px" alt="わ">
+                    <img src="./image/hira-ri.png" width="80px" alt="り">
+                </div>
+                <img src="./image/kappa_girl.png" class="kappa" alt="河童ガール">
             </div>
             <p id="final-score"></p>
             <table id="answer-table"></table>
@@ -82,7 +85,7 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="script.js"></script>
+    <script src="./js/script.js"></script>
 
 </body>
 

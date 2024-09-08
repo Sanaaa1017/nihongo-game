@@ -1,42 +1,127 @@
 body {
-    background-image: url(../image/background.jpg);
-    background-size: cover;
-    margin: 0;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    text-align: center;
+  background-image: url(../image/background.jpg);
+  background-size: cover;
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+.title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.title-img {
+  width: 50%;
+}
+
+@media (max-width: 768px) {
+  .title-img {
+    width: 80%;
+  }
+}
+
+.animal-container {
+  position: absolute;
+  top: 5%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.animal {
+  width: 15%;
+  height: auto;
+}
+@media (max-width: 768px) {
+  .animal {
+    width: 20%;
+  }
+}
+
+.animal.left {
+  position: absolute;
+  left: 10%;
+}
+
+.animal.right {
+  position: absolute;
+  right: 10%;
+}
+
+.flex {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 30px;
+}
+
+@media (max-width:768px) {
+  .animal.left {
+    position: absolute;
+    left: 3%;
+  }
+  
+  .animal.right {
+    position: absolute;
+    right: 3%;
   }
 
-.image-wrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .original-size {
-    width: 50%;
-    height: auto;
-    cursor: pointer;
-  }
-  
-  .full-screen {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-  }
-  
-  .full-screen .fullsize {
-    max-width: 90%;
-    max-height: 90%;
-  }
-  
-  .full-screen.show {
+  .flex {
     display: flex;
+    flex-direction: column;
   }
-  
+}
+.goback-btn {
+  width: 120px;
+}
+
+.goback-btn:hover {
+  transform: scale(1.2);
+}
+
+.image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.original-size {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
+.original-size:hover{
+  transform: scale(0.95);
+}
+
+.full-screen {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.full-screen .fullsize {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.full-screen.show {
+  display: flex;
+}
