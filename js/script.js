@@ -55,9 +55,9 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => console.error("Error loading questions:", error));
 
   // 平假名 checkbox 操作
-  // 監聽全選選項狀態 => 更新個別選項
+  // 監聽當全選選項狀態改變 => 同步更新個別選項狀態
   hiraAllCheckbox.addEventListener("change", function () {
-    const isChecked = hiraAllCheckbox.checked;
+    const isChecked = hiraAllCheckbox.checked; //全選選項是否被選中 => true or false
     hiraSeionCheckbox.checked = isChecked;
     hiraDakuonCheckbox.checked = isChecked;
     hiraHandakuonCheckbox.checked = isChecked;
@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
       hiraYouonCheckbox,
     ];
     // 選中所有個別選項 => 全選選項選中
+    // 選中全選選項 => 所有個別選項選中
     const allChecked = HiraCheckboxes.every((checkbox) => checkbox.checked);
     hiraAllCheckbox.checked = allChecked;
     // 當個別選項沒有全部都被選中，但至少有一個被選中時 => 全選選項狀態為不確定
@@ -178,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
       temporaryValue = arr[currentIndex];
       arr[currentIndex] = arr[randomIndex];
       arr[randomIndex] = temporaryValue;
-      // console.log(`交換 ${currentIndex} 和 ${randomIndex}:`, arr);
+      console.log(`交換 ${currentIndex} 和 ${randomIndex}:`, arr);
     }
     return arr;
   }
