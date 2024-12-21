@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 隨機選擇15題
     randomQuestions = shuffleArray(selectedQuestions).slice(0, 15);
     showQuestion();
+   
     // 倒數計時器
     timer = setInterval(updateTimer, 1000);
   }
@@ -179,7 +180,8 @@ document.addEventListener("DOMContentLoaded", function () {
       temporaryValue = arr[currentIndex];
       arr[currentIndex] = arr[randomIndex];
       arr[randomIndex] = temporaryValue;
-      console.log(`交換 ${currentIndex} 和 ${randomIndex}:`, arr);
+      console.log(`交換 ${currentIndex} 和 ${randomIndex}:`);
+      console.table(arr);
     }
     return arr;
   }
